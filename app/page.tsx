@@ -1,31 +1,14 @@
 import React from "react";
 import Link from "next/link";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { MainVisual } from "@/components/MainVisual";
 
 export default function Home() {
   return (
     <div className="bg-white">
-      {/* メインビジュアル */}
-      <section className="relative h-[400px] w-full bg-[#f8f9fa] flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-[#f8f9fa] via-[#ffffff] to-[#fff0f6]" />
+      {/* 1. メインビジュアル (カルーセル・コンポーネント) */}
+      <MainVisual />
 
-        <button className="absolute left-6 w-11 h-11 rounded-full bg-black/30 text-white flex items-center justify-center hover:bg-black/50 z-20 transition-all">
-          <ChevronLeft size={28} strokeWidth={1} />
-        </button>
-        <button className="absolute right-6 w-11 h-11 rounded-full bg-black/30 text-white flex items-center justify-center hover:bg-black/50 z-20 transition-all">
-          <ChevronRight size={28} strokeWidth={1} />
-        </button>
-
-        <div className="z-10 hero-title-box w-full max-w-[850px] py-[55px] px-4 text-center">
-          <span className="text-white text-[26px] md:text-[30px] font-bold leading-[1.8] tracking-[0.2em] drop-shadow-md">
-            想像力という技術で、
-            <br />
-            日常を鮮やかな物語へと書き換える。
-          </span>
-        </div>
-      </section>
-
-      {/* ニュースリスト */}
+      {/* 2. ニュースリスト (Topics) */}
       <section className="py-[100px] max-w-[1040px] mx-auto px-6 border-b border-[#eee]">
         <div className="text-center mb-[75px]">
           <h2 className="text-[52px] font-light text-[#555] tracking-[0.15em] uppercase font-cinzel">
@@ -39,6 +22,12 @@ export default function Home() {
               date: "2026.03.17",
               title: "クリエイティブ基盤『Fiction-Core』公開",
               text: "企業のブランディングを物語化する独自エンジンを発表しました。",
+            },
+            {
+              cat: "News",
+              date: "2026.03.18",
+              title: "コーポレートサイトをリニューアルしました",
+              text: "yesフィクション株式会社の新しいアイデンティティを反映したサイトを公開しました。",
             },
           ].map((item, i) => (
             <div
@@ -72,13 +61,65 @@ export default function Home() {
           ))}
         </div>
         <div className="mt-[65px] text-center">
-          <Link href="#" className="btn-readmore">
+          <Link
+            href="#"
+            className="inline-block px-14 py-4 border border-[#e6006e] text-[#e6006e] text-[11px] font-bold tracking-widest hover:bg-[#e6006e] hover:text-white transition-all uppercase"
+          >
             Read More
           </Link>
         </div>
       </section>
 
-      {/* 事業紹介 */}
+      {/* 3. 会社概要 (Company) - 追加セクション */}
+      <section className="py-[100px] bg-[#f8f9fa]">
+        <div className="max-w-[1040px] mx-auto px-6">
+          <div className="text-center mb-[70px]">
+            <h2 className="text-[52px] font-light text-[#555] tracking-[0.15em] uppercase font-cinzel">
+              Company
+            </h2>
+          </div>
+
+          <div className="bg-white border border-[#eee] overflow-hidden shadow-sm">
+            {[
+              {
+                label: "会社名",
+                value: "yesフィクション株式会社（YES FICTION Co., Ltd.）",
+              },
+              {
+                label: "所在地",
+                value:
+                  "〒000-0000 東京都どこか区物語町 1-2-3 フィクションビル 7F",
+              },
+              { label: "設立", value: "2026年3月17日" },
+              { label: "代表取締役", value: "Makoto Itono" },
+              {
+                label: "事業内容",
+                value:
+                  "ナラティブ・プラットフォームの運営\nクリエイティブ・テクノロジー支援\n次世代エンジニア育成事業",
+              },
+              {
+                label: "ミッション",
+                value: "想像力という技術で、日常を鮮やかな物語へと書き換える。",
+              },
+            ].map((item, i) => (
+              <dl
+                key={i}
+                className="flex flex-col md:flex-row border-b border-[#eee] last:border-0"
+              >
+                <dt className="w-full md:w-[280px] bg-[#fafafa] px-8 py-6 text-[13px] font-bold text-[#666] flex items-center">
+                  <span className="w-1.5 h-1.5 bg-[#e6006e] rounded-full mr-3" />
+                  {item.label}
+                </dt>
+                <dd className="flex-grow px-8 py-6 text-[14px] text-[#333] leading-[1.8] whitespace-pre-wrap">
+                  {item.value}
+                </dd>
+              </dl>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 4. 事業紹介 (Services) */}
       <section className="py-[100px] max-w-[1040px] mx-auto px-6 text-center">
         <div className="mb-[60px]">
           <h2 className="text-[52px] font-light text-[#555] tracking-[0.15em] uppercase font-cinzel">
@@ -116,12 +157,15 @@ export default function Home() {
             </div>
           ))}
         </div>
-        <Link href="#" className="btn-readmore">
+        <Link
+          href="#"
+          className="inline-block px-14 py-4 border border-[#e6006e] text-[#e6006e] text-[11px] font-bold tracking-widest hover:bg-[#e6006e] hover:text-white transition-all uppercase"
+        >
           View All Business
         </Link>
       </section>
 
-      {/* ビジョン */}
+      {/* 5. ビジョン (Vision) */}
       <section className="py-[110px] bg-[#e6006e] text-white text-center">
         <div className="max-w-[1280px] mx-auto px-6">
           <h2 className="text-[46px] font-light tracking-[0.2em] mb-6 uppercase font-cinzel">
