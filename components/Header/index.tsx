@@ -1,24 +1,59 @@
+import "./Header.css";
 import { Logo } from "@/components/Logo";
-import { Navigation } from "./Navigation";
+import { PcNav } from "./Navigation";
+import { SpNav } from "./Navigation";
 import Link from "next/link";
 
 export const Header = () => {
   return (
-    // w-full で白背景を横いっぱいに。flex-col で中身を縦に並べる。
-    <header className="w-full bg-white pt-10 md:pt-[50px] pb-8 md:pb-[40px] relative z-50">
-      <div className="max-w-[1280px] mx-auto px-6 flex flex-col items-center">
-        {/* ロゴ：PC/SP共に中央 */}
-        <h1 className="mb-6 md:mb-10">
+    <header
+      style={{
+        width: "100%",
+        background: "#fff",
+        position: "relative",
+        zIndex: 50,
+      }}
+    >
+      {/* PC版 */}
+      <div className="header-pc">
+        <h1 className="header-pc__logo">
           <Link
             href="/"
-            className="transition-opacity hover:opacity-80 block w-[140px] md:w-[180px]"
+            style={{ display: "block", width: "220px", margin: "0 auto" }}
           >
             <Logo />
           </Link>
         </h1>
+        <PcNav />
+      </div>
 
-        {/* ナビゲーション：ここに PCメニュー と SPボタン/メニュー 両方が入る */}
-        <Navigation />
+      {/* SP版 */}
+      <div
+        className="header-sp"
+        style={{
+          position: "relative",
+          alignItems: "center",
+          height: "60px",
+          borderBottom: "1px solid #eeeeee",
+        }}
+      >
+        {/* ロゴ: 絶対配置で中央 */}
+        <h1
+          style={{
+            margin: 0,
+            position: "absolute",
+            left: "50%",
+            transform: "translateX(-50%)",
+          }}
+        >
+          <Link href="/" style={{ display: "block", width: "120px" }}>
+            <Logo />
+          </Link>
+        </h1>
+        {/* メニューボタン: 右端 */}
+        <div style={{ marginLeft: "auto" }}>
+          <SpNav />
+        </div>
       </div>
     </header>
   );

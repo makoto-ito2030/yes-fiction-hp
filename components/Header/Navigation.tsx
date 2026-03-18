@@ -1,73 +1,215 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { Menu, X } from "lucide-react";
 
 const NAV_ITEMS = [
   { name: "TOPICS", href: "#" },
   { name: "VISION", href: "#" },
-  { name: "BUSINESS・COMMUNITY", href: "#", extraClass: "tracking-tighter" },
+  { name: "BUSINESS・COMMUNITY", href: "#" },
   { name: "COMPANY", href: "#" },
   { name: "RECRUIT", href: "#" },
   { name: "CONTACT", href: "#" },
 ];
 
-export const Navigation = () => {
+/* PC専用ナビ */
+export const PcNav = () => (
+  <nav
+    style={{
+      width: "100%",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+    }}
+  >
+    {NAV_ITEMS.map((item) => (
+      <Link key={item.name} href={item.href} className="pc-nav-link">
+        {item.name}
+      </Link>
+    ))}
+  </nav>
+);
+
+/* SP専用ナビ */
+export const SpNav = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+  useEffect(() => {
+    if (!mounted) return;
+    document.body.style.overflow = isOpen ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isOpen, mounted]);
 
   return (
-    <div className="w-full">
-      {/* 【PC版】ロゴのすぐ下に表示。hidden md:flex でPCのみ出す */}
-      <nav className="hidden min-[981px]:flex justify-center items-center gap-10 text-[11px] font-bold tracking-[0.15em] text-[#999]">
-        {NAV_ITEMS.map((item) => (
-          <Link
-            key={item.name}
-            href={item.href}
-            className={`hover:text-[#e6006e] transition-colors ${item.extraClass || ""}`}
+    <>
+      {/* メニューボタン（×に切り替え） */}
+      <button
+        onClick={() => setIsOpen((v) => !v)}
+        aria-expanded={isOpen}
+        aria-label={isOpen ? "メニューを閉じる" : "メニューを開く"}
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          width: "60px",
+          height: "60px",
+          color: isOpen ? "#ffffff" : "#999999",
+          background: isOpen ? "#3d3d3d" : "none",
+          border: "none",
+          cursor: "pointer",
+          padding: 0,
+          transition: "background 300ms, color 300ms",
+        }}
+      >
+        {isOpen ? (
+          <svg
+            width="22"
+            height="22"
+            viewBox="0 0 22 22"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.5"
           >
-            {item.name}
-          </Link>
-        ))}
-      </nav>
+            <line x1="3" y1="3" x2="19" y2="19" />
+            <line x1="19" y1="3" x2="3" y2="19" />
+          </svg>
+        ) : (
+          <span
+            style={{ display: "flex", flexDirection: "column", gap: "5px" }}
+            aria-hidden="true"
+          >
+            <span
+              style={{
+                display: "block",
+                width: "18px",
+                height: "1.5px",
+                background: "currentColor",
+              }}
+            />
+            <span
+              style={{
+                display: "block",
+                width: "18px",
+                height: "1.5px",
+                background: "currentColor",
+              }}
+            />
+            <span
+              style={{
+                display: "block",
+                width: "18px",
+                height: "1.5px",
+                background: "currentColor",
+              }}
+            />
+          </span>
+        )}
+      </button>
 
-      {/* 【SP版：三本線ボタン】画面の右上（headerの範囲内）に固定 */}
-      <div className="min-[981px]:hidden absolute right-6 top-8 md:top-10">
-        <button
-          onClick={() => setIsOpen(!isOpen)}
-          className="text-[#999] flex flex-col items-center gap-1"
+      {mounted && (
+        /* メニューパネル: ヘッダーバー(60px)の直下から表示 */
+        <nav
+          aria-hidden={!isOpen}
+          style={{
+            position: "fixed",
+            top: "60px",
+            left: 0,
+            width: "100%",
+            zIndex: 100,
+            background: "#3d3d3d",
+            display: "flex",
+            flexDirection: "column",
+            opacity: isOpen ? 1 : 0,
+            pointerEvents: isOpen ? "auto" : "none",
+            transition: "opacity 300ms ease",
+          }}
         >
-          {isOpen ? <X size={24} /> : <Menu size={24} />}
-          <span className="text-[10px] font-bold">メニュー</span>
-        </button>
-      </div>
-
-      {/* 【SP版：全画面メニュー】開いた時だけ表示 */}
-      {isOpen && (
-        <nav className="min-[981px]:hidden fixed inset-0 w-full h-full bg-white z-[100] pt-24 px-6">
-          <ul className="flex flex-col items-center gap-8 text-[14px] font-bold tracking-[0.15em] text-[#999]">
+          <ul
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              margin: 0,
+              padding: 0,
+              listStyle: "none",
+            }}
+          >
             {NAV_ITEMS.map((item) => (
-              <li key={item.name}>
-                <Link href={item.href} onClick={() => setIsOpen(false)}>
+              <li key={item.name} style={{ borderBottom: "1px solid #555" }}>
+                <Link
+                  href={item.href}
+                  onClick={() => setIsOpen(false)}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    padding: "22px 20px",
+                    fontSize: "14px",
+                    fontWeight: 700,
+                    letterSpacing: "0.15em",
+                    color: "#ffffff",
+                    textDecoration: "none",
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.background = "#4d4d4d";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.background = "transparent";
+                  }}
+                >
                   {item.name}
+                  <svg
+                    width="6"
+                    height="11"
+                    viewBox="0 0 6 11"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                  >
+                    <polyline points="1,1 5,5.5 1,10" />
+                  </svg>
                 </Link>
               </li>
             ))}
-            <li className="mt-8 pt-8 border-t border-[#eee] w-full flex justify-center gap-4 text-[11px] opacity-60">
-              <Link href="#">個人情報保護方針</Link>
-              <span>｜</span>
-              <Link href="#">プレスキット</Link>
+            <li style={{ padding: "24px 20px", borderTop: "1px solid #555" }}>
+              <p
+                style={{
+                  display: "flex",
+                  gap: "16px",
+                  fontSize: "11px",
+                  fontWeight: 700,
+                  color: "#aaaaaa",
+                  margin: 0,
+                  letterSpacing: "0.05em",
+                }}
+              >
+                <Link
+                  href="#"
+                  onClick={() => setIsOpen(false)}
+                  style={{ color: "inherit", textDecoration: "underline" }}
+                >
+                  個人情報保護方針
+                </Link>
+                <span>｜</span>
+                <Link
+                  href="#"
+                  onClick={() => setIsOpen(false)}
+                  style={{ color: "inherit", textDecoration: "none" }}
+                >
+                  プレスキット
+                </Link>
+              </p>
             </li>
           </ul>
-          {/* 閉じるボタン（メニュー内） */}
-          <button
-            onClick={() => setIsOpen(false)}
-            className="absolute top-8 right-6 text-[#999]"
-          >
-            <X size={32} />
-          </button>
         </nav>
       )}
-    </div>
+    </>
   );
 };
+
+export const Navigation = SpNav;
