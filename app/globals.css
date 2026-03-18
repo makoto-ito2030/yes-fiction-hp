@@ -1,7 +1,6 @@
 @import "tailwindcss";
 
 @theme {
-  /* 独自ブランドカラー（ピンクを継承） */
   --color-fiction-pink: #e6006e;
   --color-fiction-black: #333333;
   --color-fiction-gray: #999999;
