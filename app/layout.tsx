@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { Cinzel } from "next/font/google";
 import "./globals.css";
-import { Logo } from "@/components/Logo";
+// ヘッダーコンポーネントをインポート（内部でロゴとナビに分かれています）
+import { Header } from "@/components/Header";
 import Link from "next/link";
 
 const cinzel = Cinzel({
@@ -11,7 +12,7 @@ const cinzel = Cinzel({
 
 export const metadata: Metadata = {
   title: "yesフィクション株式会社 - YES FICTION Co.,Ltd.",
-  description: "想像力という技術で、日常を鮮やかな物語へと書き換える。",
+  description: "想像と技術を繋ぎ、まだ見ぬ未来のスタンダードを形にする。",
 };
 
 export default function RootLayout({
@@ -22,39 +23,12 @@ export default function RootLayout({
   return (
     <html lang="ja" className={cinzel.variable}>
       <body className="bg-white">
-        <header className="pt-[50px] pb-[40px] bg-white">
-          <div className="max-w-[1280px] mx-auto px-6">
-            <div className="flex justify-center mb-10">
-              <Link href="/" className="transition-opacity hover:opacity-80">
-                <Logo />
-              </Link>
-            </div>
-
-            <nav className="flex justify-center items-center gap-[50px] text-[11px] font-bold tracking-[0.15em] text-[#999]">
-              <Link href="#" className="hover:text-[#e6006e] transition-colors">
-                TOPICS
-              </Link>
-              <Link href="#" className="hover:text-[#e6006e] transition-colors">
-                VISION
-              </Link>
-              <Link
-                href="#"
-                className="hover:text-[#e6006e] transition-colors tracking-tighter"
-              >
-                BUSINESS・COMMUNITY
-              </Link>
-              <Link href="#" className="hover:text-[#e6006e] transition-colors">
-                COMPANY
-              </Link>
-              <Link href="#" className="hover:text-[#e6006e] transition-colors">
-                RECRUIT
-              </Link>
-              <Link href="#" className="hover:text-[#e6006e] transition-colors">
-                CONTACT
-              </Link>
-            </nav>
-          </div>
-        </header>
+        {/* この Header の中で:
+            1. ロゴエリア（中央寄せ、余白あり）
+            2. ナビゲーション（PC横並び / SPハンバーガー）
+            が動いています。
+        */}
+        <Header />
 
         <main>{children}</main>
 

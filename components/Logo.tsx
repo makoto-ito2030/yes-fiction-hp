@@ -10,9 +10,9 @@ export const Logo = () => {
       <Image
         src="/images/logo01.png"
         alt="YES FICTION"
-        width={140}
-        height={24}
-        priority // ヘッダーのロゴは最優先で読み込む設定
+        width={220}
+        height={38}
+        priority
         className="object-contain"
       />
     </div>
